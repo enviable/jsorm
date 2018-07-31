@@ -40,6 +40,7 @@ import { cloneDeep } from "./util/clonedeep"
 import { nonenumerable } from "./util/decorators"
 import { IncludeScopeHash } from "./util/include-directive"
 import { ValidationErrors } from "./validation-errors"
+import { isEqual } from "./util/isequal"
 
 export type KeyCaseValue = "dash" | "camel" | "snake"
 
@@ -472,7 +473,7 @@ export class JSORMBase {
       Object.keys(attrs).forEach(k => {
         let self = this as any
         let changes = this.changes() as any
-        if (self[k] !== attrs[k] && !changes[k]) {
+        if (!isEqual(self[k], attrs[k]) && !changes[k]) {
           diff[k] = [self[k], attrs[k]]
           self[k] = attrs[k]
 

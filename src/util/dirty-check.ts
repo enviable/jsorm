@@ -2,6 +2,7 @@ import { JSORMBase, ModelRecord, ModelAttributeChangeSet } from "../model"
 import { IncludeDirective, IncludeScopeHash } from "./include-directive"
 import { IncludeScope } from "../scope"
 import { JsonapiResourceIdentifier } from "../jsonapi-spec"
+import { isEqual } from "./isequal"
 
 class DirtyChecker<T extends JSORMBase> {
   model: T
@@ -60,7 +61,7 @@ class DirtyChecker<T extends JSORMBase> {
 
       if (!this.model.isPersisted) {
         dirty[key] = [null, current]
-      } else if (prior !== current) {
+      } else if (!isEqual(prior, current)) {
         dirty[key] = [prior, current]
       }
     }
